@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Master — Командний центр маркетингу</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #181b22;
+    --panel-2: #20242d;
+    --border: #2a2f3a;
+    --text: #ececec;
+    --muted: #9aa0ac;
+    --accent: #ff6b1a;
+    --accent-2: #ffa066;
+    --green: #4ade80;
+    --blue: #60a5fa;
+    --purple: #c084fc;
+    --yellow: #facc15;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  header {
+    padding: 28px 40px 16px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #1a1d24 0%, var(--bg) 100%);
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  header .sub {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .accent { color: var(--accent); }
+  
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    padding: 24px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .sidebar {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
+  .sidebar .block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .sidebar h3 {
+    margin: 0 0 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .nav-item {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text);
+    text-decoration: none;
+    transition: background .15s;
+    cursor: pointer;
+  }
+  .nav-item:hover { background: var(--panel-2); }
+  .nav-item.active { background: var(--accent); color: #fff; }
+  
+  .kpi-mini {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+  }
+  .kpi-mini .v { color: var(--accent); font-weight: 600; }
+  
+  /* Main */
+  .main { min-width: 0; }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .agent-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .agent-card .num {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .agent-card .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+    background: var(--panel-2);
+  }
+  .agent-card .name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .agent-card .desc {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+  .agent-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .agent-card .tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: var(--panel-2);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  
+  /* Agent detail */
+  .agent-detail {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    display: none;
+    margin-bottom: 32px;
+  }
+  .agent-detail.active { display: block; }
+  .agent-detail .head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .agent-detail .head .icon-big {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--panel-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+  }
+  .agent-detail h2 { margin: 0; font-size: 22px; }
+  .agent-detail .role { color: var(--muted); font-size: 14px; }
+  
+  .agent-detail h4 {
+    margin: 18px 0 8px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-2);
+  }
+  .agent-detail ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .agent-detail .examples {
+    background: var(--panel-2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 8px;
+  }
+  .agent-detail .examples code {
+    display: block;
+    color: var(--green);
+    font-size: 13px;
+    padding: 4px 0;
+    font-family: "SF Mono", Monaco, Consolas, monospace;
+  }
+  
+  .copy-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 16px;
+    transition: opacity .15s;
+  }
+  .copy-btn:hover { opacity: 0.9; }
+  .copy-btn:active { transform: scale(0.98); }
+  
+  /* Workflow */
+  .workflow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .workflow .day {
+    background: var(--panel-2);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    border-top: 3px solid var(--accent);
+  }
+  .workflow .day .title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .workflow .day .task {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  
+  /* Skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .skill-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    transition: border-color .15s;
+  }
+  .skill-card:hover { border-color: var(--accent-2); }
+  .skill-card .name { font-weight: 600; margin-bottom: 4px; }
+  .skill-card .file { color: var(--muted); font-size: 11px; font-family: monospace; }
+  
+  /* KPI */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: linear-gradient(135deg, var(--panel) 0%, var(--panel-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .kpi-card .label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-card .value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 6px;
+    color: var(--accent-2);
+  }
+  .kpi-card .note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  
+  footer {
+    padding: 24px 40px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  
+  .quick-cmd {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+  }
+  .quick-cmd label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .quick-cmd .preview {
+    background: var(--panel-2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    font-family: "SF Mono", monospace;
+    font-size: 13px;
+    color: var(--green);
+    border-left: 3px solid var(--accent);
+  }
+  
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding: 16px; }
+    .sidebar { position: static; }
+    .workflow { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 20px 16px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚗 My Master — <span class="accent">Командний центр маркетингу</span></h1>
+  <div class="sub">12 ШІ-агентів + 13 skills · Автосервіс Мукачево · v1.0</div>
+</header>
+
+<div class="layout">
+  
+  <aside class="sidebar">
+    <div class="block">
+      <h3>Навігація</h3>
+      <a class="nav-item active" onclick="scrollTo2('agents')">👥 Агенти</a>
+      <a class="nav-item" onclick="scrollTo2('workflow')">📅 Тиждень</a>
+      <a class="nav-item" onclick="scrollTo2('skills')">⚙️ Skills</a>
+      <a class="nav-item" onclick="scrollTo2('kpi')">📊 KPI</a>
+      <a class="nav-item" onclick="scrollTo2('howto')">🎯 Як використати</a>
+    </div>
+    
+    <div class="block">
+      <h3>Цілі 2026</h3>
+      <div class="kpi-mini"><span>Заявок/міс</span><span class="v">+30%</span></div>
+      <div class="kpi-mini"><span>Повторні</span><span class="v">25%</span></div>
+      <div class="kpi-mini"><span>Google Maps</span><span class="v">№1</span></div>
+    </div>
+    
+    <div class="block">
+      <h3>Файли</h3>
+      <a class="nav-item" href="CLAUDE.md">📜 CLAUDE.md</a>
+      <a class="nav-item" href="agents/">📁 /agents</a>
+      <a class="nav-item" href="skills/">📁 /skills</a>
+      <a class="nav-item" href="templates/">📁 /templates</a>
+      <a class="nav-item" href="reports/">📁 /reports</a>
+    </div>
+  </aside>
+  
+  <main class="main">
+    
+    <div class="quick-cmd">
+      <label>💡 Як викликати агента</label>
+      <div class="preview">Запусти агента [Назва]. [Конкретна задача].</div>
+      <div style="color: var(--muted); font-size: 12px; margin-top: 8px;">
+        Приклад: <em style="color: #ccc;">"Запусти агента Копірайтер. Напиши пост про поліровку фар."</em>
+      </div>
+    </div>
+    
+    <section id="agents">
+      <div class="section-title">👥 ВІДДІЛ АГЕНТІВ (натисніть для деталей)</div>
+      <div class="agents-grid" id="agents-grid"></div>
+      <div class="agent-detail" id="agent-detail"></div>
+    </section>
+    
+    <section id="workflow">
+      <div class="section-title">📅 ТИЖНЕВИЙ ЦИКЛ РОБОТИ</div>
+      <div class="workflow">
+        <div class="day">
+          <div class="title">ПН</div>
+          <div class="task"><b>Стратег</b><br>план тижня + бюджет</div>
+        </div>
+        <div class="day">
+          <div class="title">ВТ</div>
+          <div class="task"><b>Контент</b><br>ідеї постів + reels</div>
+        </div>
+        <div class="day">
+          <div class="title">СР</div>
+          <div class="task"><b>Копірайтер</b> + <b>Дизайнер</b><br>тексти + візуали</div>
+        </div>
+        <div class="day">
+          <div class="title">ЧТ</div>
+          <div class="task"><b>SMM</b><br>публікація + stories</div>
+        </div>
+        <div class="day">
+          <div class="title">ПТ</div>
+          <div class="task"><b>Таргет</b> + <b>Ads</b><br>запуск/оптимізація</div>
+        </div>
+        <div class="day">
+          <div class="title">СБ</div>
+          <div class="task"><b>Репутація</b><br>відгуки + CRM</div>
+        </div>
+        <div class="day">
+          <div class="title">НД</div>
+          <div class="task"><b>Аналітик</b><br>звіт + інсайти</div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="kpi">
+      <div class="section-title">📊 ЦІЛЬОВІ KPI (місяць)</div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="label">Заявки Instagram</div><div class="value">30+</div><div class="note">Direct + comments</div></div>
+        <div class="kpi-card"><div class="label">Заявки Google</div><div class="value">50+</div><div class="note">Дзвінки + форма</div></div>
+        <div class="kpi-card"><div class="label">Підписники IG</div><div class="value">+200</div><div class="note">за місяць</div></div>
+        <div class="kpi-card"><div class="label">Відгуки Google</div><div class="value">+10</div><div class="note">Maps</div></div>
+        <div class="kpi-card"><div class="label">Reach соцмережі</div><div class="value">50k+</div><div class="note">органічний</div></div>
+        <div class="kpi-card"><div class="label">CTR Ads</div><div class="value">5%+</div><div class="note">Google пошук</div></div>
+      </div>
+    </section>
+    
+    <section id="skills">
+      <div class="section-title">⚙️ SKILLS (робочі навички)</div>
+      <div class="skills-grid" id="skills-grid"></div>
+    </section>
+    
+    <section id="howto" style="margin-top: 32px;">
+      <div class="section-title">🎯 ЯК ВИКОРИСТАТИ ЦЮ СИСТЕМУ</div>
+      <div class="quick-cmd">
+        <ol style="line-height: 1.9; padding-left: 20px;">
+          <li><b>Прочитайте</b> <code style="background: var(--panel-2); padding: 2px 6px; border-radius: 4px;">CLAUDE.md</code> — заповніть пусті поля (УТП, контакти).</li>
+          <li><b>Виберіть агента</b> з відділу — натисніть картку.</li>
+          <li><b>Скопіюйте приклад команди</b> або сформулюйте свою.</li>
+          <li><b>У Cowork</b> напишіть: <em>"Прочитай файл agents/03_smm_manager.md і дай мені 5 ідей сторіс на сьогодні"</em>.</li>
+          <li>Cowork прочитає агента, врахує CLAUDE.md, і зробить роботу як цей агент.</li>
+          <li><b>Звіти</b> зберігаються в <code style="background: var(--panel-2); padding: 2px 6px; border-radius: 4px;">/reports/</code> — щотижня переглядайте.</li>
+          <li><b>CLAUDE.md — живий документ.</b> Оновлюйте коли змінюються цілі.</li>
+        </ol>
+      </div>
+    </section>
+    
+  </main>
+</div>
+
+<footer>
+  My Master Marketing AI Department · v1.0 · {{Створено 18.05.2026}}
+  · <a style="color: var(--accent);" href="https://mymastermyk.com.ua/" target="_blank">mymastermyk.com.ua</a>
+</footer>
+
+<script>
+const AGENTS = [
+  { id: '01', file: 'agents/01_strategist.md', icon: '🎯', name: 'Стратег', role: 'Маркетинг-стратегія',
+    desc: 'OKR, бюджет, місячні плани, координація команди',
+    tags: ['план', 'бюджет', 'KPI'],
+    sample: 'Запусти агента Стратег. Склади маркетинг-план на червень 2026, бюджет 15 000 грн.' },
+  { id: '02', file: 'agents/02_content_creator.md', icon: '💡', name: 'Контент-мейкер', role: 'Креатив + контент-план',
+    desc: 'Ідеї постів, рубрики, контент-календар',
+    tags: ['ідеї', 'рубрики', 'reels'],
+    sample: 'Запусти агента Контент-мейкер. Дай 15 ідей постів на червень з фокусом на літо.' },
+  { id: '03', file: 'agents/03_smm_manager.md', icon: '📱', name: 'SMM-менеджер', role: 'Instagram + Facebook',
+    desc: 'Публікації, stories, reels, відповіді, хештеги',
+    tags: ['IG', 'FB', 'stories'],
+    sample: 'Запусти агента SMM. Склади графік публікацій на тиждень: 5 постів + 3 reels.' },
+  { id: '04', file: 'agents/04_seo_specialist.md', icon: '🔍', name: 'SEO-спеціаліст', role: 'Сайт + Google + Maps',
+    desc: 'Ключові слова, оптимізація, Google Business',
+    tags: ['SEO', 'Maps', 'сайт'],
+    sample: 'Запусти агента SEO. Зроби аудит сайту mymastermyk.com.ua і дай 10 рекомендацій.' },
+  { id: '05', file: 'agents/05_google_ads.md', icon: '📈', name: 'Google Ads', role: 'Контекстна реклама',
+    desc: 'Search кампанії, Performance Max, оптимізація',
+    tags: ['Google Ads', 'PPC', 'reklama'],
+    sample: 'Запусти агента Google Ads. Налаштуй кампанію на фарбування авто Мукачево, 100 грн/день.' },
+  { id: '06', file: 'agents/06_targetolog.md', icon: '🎯', name: 'Таргетолог', role: 'Meta Ads (IG + FB)',
+    desc: 'Аудиторії, креативи, ремаркетинг, A/B тести',
+    tags: ['Meta', 'таргет', 'аудиторії'],
+    sample: 'Запусти агента Таргетолог. Запусти кампанію на поліровку зі знижкою -20%, бюджет 1500 грн.' },
+  { id: '07', file: 'agents/07_copywriter.md', icon: '✍️', name: 'Копірайтер', role: 'Усі тексти',
+    desc: 'Пости, реклама, сценарії reels, тексти сайту',
+    tags: ['пости', 'реклама', 'сайт'],
+    sample: 'Запусти агента Копірайтер. Напиши пост про поліровку фар + сценарій reels 30 сек.' },
+  { id: '08', file: 'agents/08_designer.md', icon: '🎨', name: 'Дизайнер', role: 'Візуал + брифи',
+    desc: 'Концепти, шаблони, брифи на зйомку',
+    tags: ['візуал', 'брифи', 'reels'],
+    sample: 'Запусти агента Дизайнер. Дай бриф на зйомку процесу поліровки кузова.' },
+  { id: '09', file: 'agents/09_analyst.md', icon: '📊', name: 'Аналітик', role: 'Звіти + метрики',
+    desc: 'ROI, CPL, CPA, воронка, прогнози',
+    tags: ['звіт', 'ROI', 'дані'],
+    sample: 'Запусти агента Аналітик. Зроби звіт за травень. Витратили 8000 грн, отримали 22 клієнти.' },
+  { id: '10', file: 'agents/10_crm_loyalty.md', icon: '💎', name: 'CRM / Лояльність', role: 'Утримання клієнтів',
+    desc: 'База, розсилки, програма лояльності, реактивація',
+    tags: ['CRM', 'лояльність', 'Viber'],
+    sample: 'Запусти агента CRM. Розпиши програму лояльності на 3 рівні з розрахунками маржі.' },
+  { id: '11', file: 'agents/11_reputation.md', icon: '⭐', name: 'Репутація', role: 'Відгуки + кризи',
+    desc: 'Google Maps, відповіді, кризовий менеджмент',
+    tags: ['Maps', 'відгуки', 'кризи'],
+    sample: 'Запусти агента Репутація. Дай план для 50 нових відгуків Google за 3 місяці.' },
+  { id: '12', file: 'agents/12_trend_hunter.md', icon: '🔮', name: 'Тренд-хантер', role: 'Конкуренти + тренди',
+    desc: 'Аналіз ринку, нові формати, ідеї тестів',
+    tags: ['конкуренти', 'тренди', 'тести'],
+    sample: 'Запусти агента Тренд-хантер. Проскануй 5 топових СТО Мукачева, дай аналіз.' },
+];
+
+const SKILLS = [
+  { name: 'Контент-календар', file: 'skills/content_calendar.md' },
+  { name: 'Створення поста', file: 'skills/post_creation.md' },
+  { name: 'SEO-аудит', file: 'skills/seo_audit.md' },
+  { name: 'Google Ads setup', file: 'skills/google_ads_setup.md' },
+  { name: 'Facebook Ads setup', file: 'skills/facebook_ads_setup.md' },
+  { name: 'KPI дашборд', file: 'skills/kpi_dashboard.md' },
+  { name: 'Карта клієнта', file: 'skills/client_journey.md' },
+  { name: 'Аналіз конкурентів', file: 'skills/competitor_analysis.md' },
+  { name: 'Brand voice', file: 'skills/brand_voice.md' },
+  { name: 'Кризовий менеджмент', file: 'skills/crisis_management.md' },
+  { name: 'Місячний звіт', file: 'skills/monthly_report.md' },
+  { name: 'Сценарії Reels', file: 'skills/reels_scriptwriting.md' },
+  { name: 'Стратегія відгуків', file: 'skills/reviews_strategy.md' },
+];
+
+// Render agents
+const agentsGrid = document.getElementById('agents-grid');
+AGENTS.forEach(a => {
+  const card = document.createElement('div');
+  card.className = 'agent-card';
+  card.innerHTML = `
+    <div class="num">#${a.id}</div>
+    <div class="icon">${a.icon}</div>
+    <div class="name">${a.name}</div>
+    <div class="desc">${a.desc}</div>
+    <div class="tags">${a.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+  `;
+  card.onclick = () => showAgent(a);
+  agentsGrid.appendChild(card);
+});
+
+const skillsGrid = document.getElementById('skills-grid');
+SKILLS.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'skill-card';
+  card.innerHTML = `<div class="name">⚙️ ${s.name}</div><div class="file">${s.file}</div>`;
+  skillsGrid.appendChild(card);
+});
+
+function showAgent(a) {
+  const d = document.getElementById('agent-detail');
+  d.innerHTML = `
+    <div class="head">
+      <div class="icon-big">${a.icon}</div>
+      <div>
+        <h2>${a.name}</h2>
+        <div class="role">${a.role} · <code style="background: var(--panel-2); padding: 2px 6px; border-radius: 4px; font-size: 11px;">${a.file}</code></div>
+      </div>
+    </div>
+    <h4>Зона відповідальності</h4>
+    <p style="margin: 0; font-size: 14px; color: #ccc;">${a.desc}</p>
+    <h4>Приклад команди (натисніть щоб скопіювати)</h4>
+    <div class="examples"><code id="cmd-text">${a.sample}</code></div>
+    <button class="copy-btn" onclick="copyCmd()">📋 Скопіювати команду</button>
+    <a class="copy-btn" style="background: var(--panel-2); margin-left: 8px; text-decoration: none; display: inline-block;" href="${a.file}">📂 Відкрити файл агента</a>
+  `;
+  d.classList.add('active');
+  d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyCmd() {
+  const text = document.getElementById('cmd-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅ Скопійовано!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+function scrollTo2(id) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
