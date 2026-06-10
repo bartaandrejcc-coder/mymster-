@@ -96,3 +96,4 @@ LTV (Lifetime Value) = Середній чек × Частота × Тривал
 - `/reports/` — попередні звіти
 - Дані від власника або з рекламних кабінетів
 - `/skills/kpi_dashboard.md`
+- `/INSTRUKCIA_DIRECT_MANYCHAT.md` — лід-скоринг, поля CRM, метрики Direct/ключових слів

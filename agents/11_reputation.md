@@ -94,3 +94,4 @@
 - `/CLAUDE.md`
 - `/templates/review_response.md`
 - Останні відгуки (моніторинг)
+- `/INSTRUKCIA_DIRECT_MANYCHAT.md` — приклади робіт/відгуки як докази довіри в Direct

@@ -62,3 +62,4 @@
 - `/agents/01_strategist.md` — поточний план
 - `/templates/post_template.md` — шаблон формату
 - `/skills/content_calendar.md` — як скласти календар
+- `/INSTRUKCIA_DIRECT_MANYCHAT.md` — ключові слова, теми "послуги дня", лід-магніти, CTA "напишіть слово Х"

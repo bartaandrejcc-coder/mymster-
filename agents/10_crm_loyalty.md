@@ -92,3 +92,5 @@
 - `/CLAUDE.md`
 - `/skills/client_journey.md`
 - Дані по клієнтах від власника
+- `/INSTRUKCIA_DIRECT_MANYCHAT.md` — поля картки ліда з Direct-бота, лід-скоринг, прогрів теплих/холодних
+- `/agents/13_direct_communicator.md` — Direct-комунікатор передає лідів сюди

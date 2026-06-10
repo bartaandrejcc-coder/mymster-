@@ -97,3 +97,4 @@
 - `/CLAUDE.md` (особливо Brand Voice!)
 - `/templates/post_template.md`
 - Brief від Контент-мейкера або Стратега
+- `/INSTRUKCIA_DIRECT_MANYCHAT.md` — тон, ЗАБОРОНЕНІ/правильні фрази по цінах, готові відповіді для Direct

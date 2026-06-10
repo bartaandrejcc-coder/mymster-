@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мокап v4 — Ремонт авто з США під ключ | My Master</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #EBEBED; color: #1a1a1a; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+section { padding: 64px 0; }
+
+.section-label {
+  display: inline-block; background: rgba(30,136,229,0.12); color: #1E88E5;
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.12em; padding: 5px 14px; border-radius: 50px; margin-bottom: 12px;
+}
+.section-title {
+  font-size: 2.1rem; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.03em; line-height: 1.1; margin-bottom: 10px;
+}
+.section-sub { color: #666; font-size: 1rem; margin-bottom: 2.8rem; line-height: 1.6; }
+
+/* ─── КНОПКИ ─── */
+.btn-orange {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #E8561A, #C94010);
+  color: #fff; font-weight: 800; font-size: 1rem; text-transform: uppercase;
+  letter-spacing: 0.07em; padding: 17px 36px; border-radius: 50px;
+  text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(200,60,10,0.4);
+}
+.btn-blue {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #1E88E5; color: #fff; font-weight: 700; font-size: 0.95rem;
+  text-transform: uppercase; letter-spacing: 0.06em; padding: 15px 30px;
+  border-radius: 50px; text-decoration: none; border: none; cursor: pointer;
+}
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 2px solid rgba(255,255,255,0.5); color: #fff; font-weight: 700;
+  font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 14px 28px; border-radius: 50px; text-decoration: none;
+}
+.btn-white {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: #1a1a1a; font-weight: 800; font-size: 0.95rem;
+  text-transform: uppercase; letter-spacing: 0.06em; padding: 16px 34px;
+  border-radius: 50px; text-decoration: none; border: none; cursor: pointer;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 01 — HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#hero {
+  min-height: 600px; position: relative; overflow: hidden;
+  display: flex; align-items: center; padding: 80px 0;
+  background: linear-gradient(135deg, #0d1e30 0%, #1a3050 100%);
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, rgba(0,0,0,0.88) 40%, rgba(0,0,0,0.25) 100%);
+  z-index: 1;
+}
+/* Відео-плейсхолдер */
+.hero-video-ph {
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; align-items: center; justify-content: flex-end; padding-right: 8%;
+}
+.play-btn-lg {
+  width: 100px; height: 100px; border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.35);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.4;
+}
+.play-btn-lg::after { content: '▶'; font-size: 2rem; color: #fff; margin-left: 6px; }
+
+/* Декоративні кола (стиль сайту) */
+.deco-circle {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(30,136,229,0.2); z-index: 1; pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(30,136,229,0.25); border: 1px solid rgba(30,136,229,0.5);
+  color: #fff; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; padding: 7px 18px; border-radius: 50px; margin-bottom: 22px;
+}
+.hero-badge-dot { width: 8px; height: 8px; background: #1E88E5; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+.hero-h1 {
+  font-size: 3rem; font-weight: 900; text-transform: uppercase;
+  color: #fff; line-height: 1.08; max-width: 660px; margin-bottom: 8px;
+}
+.hero-h1 .accent { color: #1E88E5; }
+.hero-tagline {
+  font-size: 1.1rem; color: rgba(255,255,255,0.65); max-width: 540px;
+  margin: 14px 0 32px; line-height: 1.65;
+}
+.hero-tagline strong { color: #fff; }
+
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 32px; }
+
+/* Міні-аргументи під кнопками */
+.hero-pills { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8); font-size: 0.78rem; font-weight: 600;
+  padding: 6px 14px; border-radius: 50px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 02 — TRUST BAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#trust { background: #fff; padding: 28px 0; border-bottom: 2px solid #EBEBED; }
+.trust-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+.trust-item {
+  text-align: center; padding: 12px 8px;
+  border-right: 1px solid #eee;
+}
+.trust-item:last-child { border-right: none; }
+.trust-num { font-size: 2.1rem; font-weight: 900; color: #1E88E5; line-height: 1; }
+.trust-lbl { font-size: 0.75rem; color: #777; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 03 — ЦИКЛ + ПОСЛУГИ
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#process { background: #EBEBED; }
+
+/* 7 кроків — горизонтальний pipeline */
+.pipeline { display: flex; gap: 0; margin-bottom: 48px; position: relative; }
+.pipeline::before {
+  content: ''; position: absolute;
+  top: 32px; left: 40px; right: 40px; height: 2px;
+  background: linear-gradient(90deg, #1E88E5, #0d5fa8);
+  z-index: 0;
+}
+.step {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  text-align: center; position: relative; z-index: 1; padding: 0 6px;
+}
+.step-num {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #1E88E5, #0d5fa8);
+  color: #fff; font-size: 1.3rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(30,136,229,0.4);
+  margin-bottom: 10px; position: relative;
+}
+.step-num.done { background: linear-gradient(135deg, #E8561A, #C94010); box-shadow: 0 4px 16px rgba(200,60,10,0.35); }
+.step-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #1a1a1a; line-height: 1.3; }
+.step-sub { font-size: 0.7rem; color: #888; margin-top: 3px; line-height: 1.3; }
+
+/* Послуги — grid карток */
+.services-label {
+  font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: #1a1a1a; margin-bottom: 16px; padding-left: 4px;
+  display: flex; align-items: center; gap: 10px;
+}
+.services-label::before { content: ''; width: 24px; height: 3px; background: #1E88E5; border-radius: 2px; }
+
+.srv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.srv-card {
+  background: #fff; border-radius: 14px; padding: 20px 18px;
+  position: relative; overflow: hidden;
+  border-left: 4px solid #1E88E5;
+}
+.srv-card.highlight { border-left-color: #E8561A; }
+.srv-icon { font-size: 1.6rem; margin-bottom: 8px; }
+.srv-title { font-size: 0.88rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: #1a1a1a; margin-bottom: 8px; }
+.srv-list { list-style: none; padding: 0; }
+.srv-list li {
+  font-size: 0.82rem; color: #555; padding: 3px 0 3px 16px;
+  position: relative; border-bottom: 1px solid #f4f4f4; line-height: 1.4;
+}
+.srv-list li:last-child { border-bottom: none; }
+.srv-list li::before { content: '→'; position: absolute; left: 0; color: #1E88E5; font-size: 0.8rem; }
+.srv-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: #E8561A; color: #fff; font-size: 0.62rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 20px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 04 — CTA ФОРМА (ОСНОВНА)
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#cta-main {
+  background: linear-gradient(135deg, #1E88E5 0%, #0d5fa8 100%);
+  padding: 64px 0; position: relative; overflow: hidden;
+}
+#cta-main::before {
+  content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1); right: -150px; top: -150px;
+}
+#cta-main::after {
+  content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08); left: -80px; bottom: -80px;
+}
+.cta-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; position: relative; z-index: 1; }
+.cta-left h2 {
+  font-size: 2rem; font-weight: 900; text-transform: uppercase; color: #fff; line-height: 1.15; margin-bottom: 16px;
+}
+.cta-left p { color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.65; margin-bottom: 24px; }
+.cta-perks { display: flex; flex-direction: column; gap: 10px; }
+.cta-perk {
+  display: flex; align-items: flex-start; gap: 10px; color: #fff; font-size: 0.9rem;
+}
+.cta-perk-icon {
+  width: 28px; height: 28px; background: rgba(255,255,255,0.2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; flex-shrink: 0; margin-top: 1px;
+}
+.cta-perk-text strong { display: block; font-weight: 700; }
+.cta-perk-text span { font-size: 0.82rem; opacity: 0.8; }
+
+/* Форма */
+.cta-form { background: #fff; border-radius: 20px; padding: 32px; }
+.form-title { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+.form-sub { font-size: 0.82rem; color: #888; margin-bottom: 20px; }
+.flabel { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #999; margin-bottom: 5px; display: block; }
+.finput {
+  width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8;
+  border-radius: 10px; font-size: 0.95rem; margin-bottom: 14px;
+  background: #fafafa; color: #1a1a1a; outline: none;
+}
+.finput:focus { border-color: #1E88E5; background: #fff; }
+textarea.finput { resize: vertical; min-height: 80px; }
+.form-cta { width: 100%; padding: 16px; font-size: 1rem; text-align: center; }
+.form-trust { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: #aaa; font-size: 0.75rem; }
+.form-urgent {
+  background: #FFF3E0; border: 1px solid #FFB74D; border-radius: 8px;
+  padding: 8px 12px; font-size: 0.8rem; color: #E65100; font-weight: 600;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 05 — РЕЗУЛЬТАТИ (До/Після)
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#results { background: #fff; }
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.result-card {
+  border-radius: 16px; overflow: hidden; position: relative;
+  background: #EBEBED;
+}
+.result-photo {
+  height: 200px; background: linear-gradient(135deg, #1a3050 0%, #0d1e30 100%);
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.result-before-after {
+  display: flex; width: 100%; height: 100%;
+}
+.result-before, .result-after {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 8px;
+}
+.result-before { background: rgba(0,0,0,0.6); }
+.result-after { background: rgba(30,136,229,0.5); }
+.result-side-label {
+  font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: rgba(255,255,255,0.7);
+}
+.result-side-icon { font-size: 2.5rem; }
+.result-divider {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+  background: #fff; transform: translateX(-50%);
+}
+.result-body { padding: 16px; }
+.result-car { font-weight: 800; font-size: 0.95rem; color: #1a1a1a; }
+.result-desc { font-size: 0.82rem; color: #666; margin: 4px 0; line-height: 1.5; }
+.result-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.result-tag {
+  background: rgba(30,136,229,0.1); color: #1E88E5;
+  font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+}
+.photo-placeholder-note {
+  background: rgba(30,136,229,0.08); border: 1.5px dashed #1E88E5;
+  border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 24px;
+  color: #1E88E5; font-size: 0.85rem; font-weight: 600;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 06 — ПОРІВНЯННЯ + ВІДГУКИ
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#social { background: #EBEBED; }
+.social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+/* Таблиця */
+.compare-box { background: #fff; border-radius: 20px; overflow: hidden; }
+.compare-box h3 { padding: 18px 22px; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; background: #1a1a1a; color: #fff; }
+.cmp-row { display: grid; grid-template-columns: 1.8fr 1fr 1fr; border-bottom: 1px solid #f0f0f0; font-size: 0.83rem; }
+.cmp-row:last-child { border-bottom: none; }
+.cmp-row div { padding: 11px 14px; }
+.cmp-row .us { background: #EBF4FD; color: #1E88E5; font-weight: 700; text-align: center; }
+.cmp-row .ot { text-align: center; color: #bbb; }
+.cmp-head { background: #f8f8f8; }
+.cmp-head div { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #aaa; }
+.cmp-head .us { background: #1E88E5; color: #fff; }
+
+/* Відгуки */
+.reviews-col { display: flex; flex-direction: column; gap: 14px; }
+.rev-card { background: #fff; border-radius: 16px; padding: 18px 20px; }
+.rev-stars { color: #FFB800; font-size: 0.9rem; margin-bottom: 8px; }
+.rev-text { font-size: 0.85rem; color: #333; line-height: 1.6; font-style: italic; margin-bottom: 12px; }
+.rev-author { display: flex; align-items: center; gap: 10px; }
+.rev-ava { width: 36px; height: 36px; border-radius: 50%; background: #1E88E5; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; }
+.rev-name { font-weight: 700; font-size: 0.85rem; }
+.rev-meta { font-size: 0.72rem; color: #aaa; margin-top: 1px; }
+.rev-google { font-size: 0.7rem; color: #1E88E5; font-weight: 700; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   БЛОК 07 — ФІНАЛЬНИЙ CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#final {
+  background: linear-gradient(135deg, #0d1e30, #1a3050);
+  padding: 80px 0; text-align: center; position: relative; overflow: hidden;
+}
+#final::before { content:''; position:absolute; width:700px;height:700px; border-radius:50%; border:1px solid rgba(30,136,229,0.12); top:-250px; right:-250px; }
+#final::after { content:''; position:absolute; width:500px;height:500px; border-radius:50%; border:1px solid rgba(30,136,229,0.08); bottom:-200px; left:-150px; }
+.final-inner { position: relative; z-index: 1; }
+.final-eyebrow {
+  display: inline-block; background: rgba(232,86,26,0.2); border: 1px solid rgba(232,86,26,0.4);
+  color: #E8561A; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; padding: 6px 16px; border-radius: 50px; margin-bottom: 20px;
+}
+#final h2 {
+  font-size: 2.4rem; font-weight: 900; text-transform: uppercase;
+  color: #fff; max-width: 660px; margin: 0 auto 16px; line-height: 1.1;
+}
+#final p { color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 500px; margin: 0 auto 36px; line-height: 1.65; }
+.final-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.final-meta { color: rgba(255,255,255,0.3); font-size: 0.8rem; margin-top: 24px; }
+
+/* Urgency bar */
+.urgency-bar {
+  background: linear-gradient(135deg, #E8561A, #C94010);
+  padding: 12px 24px; text-align: center; color: #fff;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.02em;
+  position: sticky; top: 0; z-index: 100;
+}
+.urgency-bar span { opacity: 0.85; font-weight: 400; }
+
+/* STICKY */
+.sticky-fab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 999;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+}
+.fab-btn {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; text-decoration: none; box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+}
+.fab-phone { background: linear-gradient(135deg, #E8561A, #C94010); }
+.fab-label {
+  background: #1a1a1a; color: #fff; font-size: 0.72rem; font-weight: 700;
+  padding: 4px 12px; border-radius: 20px; white-space: nowrap;
+}
+
+/* МОКАП ЛЕЙБЛИ */
+.block-wrap { position: relative; }
+.mlabel {
+  position: absolute; top: 10px; right: 16px; z-index: 20;
+  background: rgba(0,0,0,0.55); color: #fff;
+  font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; padding: 3px 10px; border-radius: 20px;
+}
+
+@media(max-width:768px){
+  .hero-h1{font-size:2rem}
+  .trust-grid{grid-template-columns:repeat(3,1fr)}
+  .srv-grid{grid-template-columns:1fr}
+  .cta-wrap{grid-template-columns:1fr}
+  .social-grid{grid-template-columns:1fr}
+  .results-grid{grid-template-columns:1fr}
+  .pipeline{flex-direction:column; gap:16px}
+  .pipeline::before{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- URGENCY BAR -->
+<div class="urgency-bar">
+  🚗 Приймаємо авто з США прямо зараз &nbsp;·&nbsp;
+  <span>Відповідь протягом 15 хвилин · Безкоштовна оцінка</span>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 01 — HERO (відео)
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel">БЛОК 01 · HERO</span>
+<section id="hero">
+  <!-- Відео фон (плейсхолдер) -->
+  <div class="hero-video-ph">
+    <div class="play-btn-lg"></div>
+  </div>
+  <!-- Декоративні кола -->
+  <div class="deco-circle" style="width:500px;height:500px;right:-180px;top:-180px;"></div>
+  <div class="deco-circle" style="width:320px;height:320px;right:-60px;top:-60px;opacity:.12;"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      My Master · Мукачево · Авто з США
+    </div>
+
+    <h1 class="hero-h1">
+      Ремонт авто<br>
+      з США<br>
+      <span class="accent">під ключ</span>
+    </h1>
+
+    <p class="hero-tagline">
+      Від аукціону до номерних знаків.<br>
+      <strong>Дефектування → кузов → електроніка → документи</strong> — в одному місці без зайвих підрядників.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#cta-main" class="btn-orange">🚀 Отримати безкоштовну оцінку</a>
+      <a href="#process" class="btn-ghost">Що входить ↓</a>
+    </div>
+
+    <div class="hero-pills">
+      <span class="hero-pill">✅ Гарантія 3 роки на ЛКП</span>
+      <span class="hero-pill">📦 Доставка зі Львова</span>
+      <span class="hero-pill">📋 Документи під ключ</span>
+      <span class="hero-pill">⚡ Відповідь за 15 хв</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 02 — TRUST BAR
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel" style="color:#333;background:rgba(0,0,0,0.07);">БЛОК 02 · TRUST</span>
+<section id="trust">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-num">200+</div>
+        <div class="trust-lbl">авто з США відновлено</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">7</div>
+        <div class="trust-lbl">етапів під ключ</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">3 роки</div>
+        <div class="trust-lbl">гарантія на ЛКП</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">15+</div>
+        <div class="trust-lbl">авто одночасно</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">7 р.</div>
+        <div class="trust-lbl">на ринку</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 03 — 7 КРОКІВ + ПОСЛУГИ
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel">БЛОК 03 · ПРОЦЕС + ПОСЛУГИ</span>
+<section id="process">
+  <div class="container">
+    <div class="section-label">Як ми працюємо</div>
+    <h2 class="section-title">Повний цикл відновлення —<br>7 етапів під одним дахом</h2>
+    <p class="section-sub">Клієнт вказує авто на аукціоні — ми робимо решту. Платіж один, контакт один, відповідальність одна.</p>
+
+    <!-- Pipeline 7 кроків -->
+    <div class="pipeline">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Підбір і купівля</div>
+        <div class="step-sub">Аукціон USA</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Доставка</div>
+        <div class="step-sub">Зі Львова в Мукачево</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Дефектування</div>
+        <div class="step-sub">Кузов, ходова, ДВЗ, електроніка</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Кузов і фарбування</div>
+        <div class="step-sub">Гарантія 3 роки</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-title">Електроніка і безпека</div>
+        <div class="step-sub">Airbag, SRS, адаптація</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-title">ТО і підготовка</div>
+        <div class="step-sub">Масла, ходова, хімчистка</div>
+      </div>
+      <div class="step">
+        <div class="step-num done">7</div>
+        <div class="step-title">Документи і номери</div>
+        <div class="step-sub">Готове авто клієнту</div>
+      </div>
+    </div>
+
+    <!-- Картки послуг -->
+    <div class="services-label">Що конкретно ми робимо на кожному етапі</div>
+    <div class="srv-grid">
+
+      <div class="srv-card highlight">
+        <span class="srv-badge">Топ-послуга</span>
+        <div class="srv-icon">🔧</div>
+        <div class="srv-title">Кузовний ремонт і фарбування</div>
+        <ul class="srv-list">
+          <li>Рихтування після аварії (аукціон USA — часто сильні пошкодження)</li>
+          <li>Повне / локальне фарбування</li>
+          <li>Точне підбирання кольору — заводський відтінок</li>
+          <li>Керамічне покриття, антигравійна плівка</li>
+          <li><strong>Гарантія 3 роки на лакофарбове покриття</strong></li>
+        </ul>
+      </div>
+
+      <div class="srv-card highlight">
+        <span class="srv-badge">Унікально</span>
+        <div class="srv-icon">💻</div>
+        <div class="srv-title">Електроніка і блоки безпеки</div>
+        <ul class="srv-list">
+          <li>Зняття крешу з блоків airbag / SRS після ДТП USA</li>
+          <li>Ремонт і прошивка блоків безпеки</li>
+          <li>Авторизовані онлайн-роботи з виробниками</li>
+          <li>Заміна ременів безпеки після спрацювання</li>
+          <li>Адаптація фар під правостороннє світло</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-icon">🚗</div>
+        <div class="srv-title">Ходова і двигун</div>
+        <ul class="srv-list">
+          <li>Повне дефектування підвіски</li>
+          <li>Ремонт амортизаторів, рульового</li>
+          <li>Ремонт турбін — спеціалізація</li>
+          <li>Ремонт КПП / зчеплення</li>
+          <li>Планове ТО (масла, фільтри, регламент)</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-icon">📦</div>
+        <div class="srv-title">Доставка і логістика</div>
+        <ul class="srv-list">
+          <li>Підбір авто на аукціоні Copart / IAAI</li>
+          <li>Участь у торгах від імені клієнта</li>
+          <li>Доставка зі Львова в Мукачево (клієнт не їде)</li>
+          <li>Пошук і замовлення запчастин</li>
+          <li>Оригінал або аналог — за вибором клієнта</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-icon">✨</div>
+        <div class="srv-title">Детейлінг і підготовка</div>
+        <ul class="srv-list">
+          <li>Хімчистка салону (обов'язкова після USA)</li>
+          <li>Озонування</li>
+          <li>Поліровка кузова і фар</li>
+          <li>Полірування та захист кузова</li>
+        </ul>
+      </div>
+
+      <div class="srv-card highlight">
+        <span class="srv-badge">Фінал</span>
+        <div class="srv-icon">📋</div>
+        <div class="srv-title">Документи і реєстрація</div>
+        <ul class="srv-list">
+          <li>Митне розмитнення і пакет документів</li>
+          <li>Сертифікація авто (українські норми)</li>
+          <li>Постановка на облік в Україні</li>
+          <li><strong>Клієнт отримує готове авто з номерами</strong></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 04 — ГОЛОВНА ФОРМА (CTA)
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel">БЛОК 04 · ГОЛОВНА CTA ФОРМА</span>
+<section id="cta-main">
+  <div class="container">
+    <div class="cta-wrap">
+      <!-- Ліва частина — аргументи -->
+      <div class="cta-left">
+        <h2>Скажіть яке авто — дамо оцінку ще до купівлі</h2>
+        <p>Надішліть посилання на лот або опишіть авто — розрахуємо вартість відновлення і терміни. Безкоштовно і без зобов'язань.</p>
+        <div class="cta-perks">
+          <div class="cta-perk">
+            <div class="cta-perk-icon">⚡</div>
+            <div class="cta-perk-text">
+              <strong>Відповідь за 15 хвилин</strong>
+              <span>Андрій особисто оцінює кожне авто</span>
+            </div>
+          </div>
+          <div class="cta-perk">
+            <div class="cta-perk-icon">💰</div>
+            <div class="cta-perk-text">
+              <strong>Оцінка ще до купівлі</strong>
+              <span>Знаєте кінцеву суму перед торгами</span>
+            </div>
+          </div>
+          <div class="cta-perk">
+            <div class="cta-perk-icon">🛡</div>
+            <div class="cta-perk-text">
+              <strong>Один підрядник — нуль головного болю</strong>
+              <span>Від аукціону до номерних знаків</span>
+            </div>
+          </div>
+          <div class="cta-perk">
+            <div class="cta-perk-icon">📋</div>
+            <div class="cta-perk-text">
+              <strong>Фото на кожному етапі</strong>
+              <span>Прозорість процесу від початку до кінця</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Права частина — форма -->
+      <div class="cta-form">
+        <div class="form-title">Безкоштовна оцінка авто</div>
+        <div class="form-sub">Відповідаємо протягом 15 хвилин</div>
+        <div class="form-urgent">⏰ Зараз вільні 3 місця для нових авто</div>
+        <label class="flabel">Ваше ім'я</label>
+        <input class="finput" type="text" placeholder="Михайло">
+        <label class="flabel">Телефон / Telegram</label>
+        <input class="finput" type="tel" placeholder="+380">
+        <label class="flabel">Посилання на лот або модель авто</label>
+        <textarea class="finput" placeholder="Наприклад: Ford F-150 2019, Copart лот №12345, пошкодження переднє. Або просто скажіть яке авто шукаєте."></textarea>
+        <button class="btn-orange form-cta">🚀 Отримати безкоштовну оцінку</button>
+        <div class="form-trust">🔒 Без спаму · Ваші дані захищені</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 05 — РЕЗУЛЬТАТИ (До/Після)
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel" style="color:#333;background:rgba(0,0,0,0.07);">БЛОК 05 · РЕЗУЛЬТАТИ</span>
+<section id="results">
+  <div class="container">
+    <div class="section-label">Наші роботи</div>
+    <h2 class="section-title">Реальні результати —<br>від аукціону до дороги</h2>
+    <p class="section-sub">Фото до і після відновлення. Кожен кейс — реальне авто реального клієнта.</p>
+
+    <!-- Плейсхолдер для фото -->
+    <div class="photo-placeholder-note">
+      📸 Цей блок заповнюється реальними фото ваших робіт. Потрібно 3–6 кейсів з парами «до/після».
+    </div>
+
+    <div class="results-grid">
+      <!-- Кейс 1 -->
+      <div class="result-card">
+        <div class="result-photo">
+          <div class="result-before-after">
+            <div class="result-before">
+              <span class="result-side-label">До</span>
+              <span class="result-side-icon">💥</span>
+            </div>
+            <div class="result-divider"></div>
+            <div class="result-after">
+              <span class="result-side-label">Після</span>
+              <span class="result-side-icon">✨</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="result-car">Dodge Ram 1500 · 2020</div>
+          <div class="result-desc">Фронтальне ДТП на аукціоні Copart. Кузов, ходова, airbag — повне відновлення.</div>
+          <div class="result-tags">
+            <span class="result-tag">Кузов</span>
+            <span class="result-tag">Airbag</span>
+            <span class="result-tag">Документи</span>
+          </div>
+        </div>
+      </div>
+      <!-- Кейс 2 -->
+      <div class="result-card">
+        <div class="result-photo">
+          <div class="result-before-after">
+            <div class="result-before">
+              <span class="result-side-label">До</span>
+              <span class="result-side-icon">🔨</span>
+            </div>
+            <div class="result-divider"></div>
+            <div class="result-after">
+              <span class="result-side-label">Після</span>
+              <span class="result-side-icon">🚗</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="result-car">Ford F-150 · 2021</div>
+          <div class="result-desc">Бічне зіткнення. Заміна порогів, фарбування, електроніка SRS.</div>
+          <div class="result-tags">
+            <span class="result-tag">Фарбування</span>
+            <span class="result-tag">SRS</span>
+            <span class="result-tag">ТО</span>
+          </div>
+        </div>
+      </div>
+      <!-- Кейс 3 -->
+      <div class="result-card">
+        <div class="result-photo">
+          <div class="result-before-after">
+            <div class="result-before">
+              <span class="result-side-label">До</span>
+              <span class="result-side-icon">💀</span>
+            </div>
+            <div class="result-divider"></div>
+            <div class="result-after">
+              <span class="result-side-label">Після</span>
+              <span class="result-side-icon">🏆</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="result-car">BMW X5 · 2019</div>
+          <div class="result-desc">Повне відновлення після повені. Двигун, салон, електроніка.</div>
+          <div class="result-tags">
+            <span class="result-tag">Двигун</span>
+            <span class="result-tag">Хімчистка</span>
+            <span class="result-tag">Кузов</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Мікро CTA після результатів -->
+    <div style="text-align:center; margin-top:32px;">
+      <a href="#cta-main" class="btn-orange">Хочу так само — отримати оцінку</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 06 — ПОРІВНЯННЯ + ВІДГУКИ
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel">БЛОК 06 · ПОРІВНЯННЯ + ВІДГУКИ</span>
+<section id="social">
+  <div class="container">
+    <div class="section-label">Чому My Master</div>
+    <h2 class="section-title" style="margin-bottom:2rem;">Ми vs конкуренти</h2>
+    <div class="social-grid">
+      <!-- Таблиця порівняння -->
+      <div>
+        <div class="compare-box">
+          <h3>My Master vs інші підрядники</h3>
+          <div class="cmp-row cmp-head">
+            <div>Параметр</div>
+            <div class="us">My Master</div>
+            <div class="ot">Інші</div>
+          </div>
+          <div class="cmp-row">
+            <div>Повний цикл 7 етапів</div>
+            <div class="us">✅ Так</div>
+            <div class="ot">❌ 1–2 етапи</div>
+          </div>
+          <div class="cmp-row">
+            <div>Зняття крешу airbag / SRS</div>
+            <div class="us">✅ Авторизовано</div>
+            <div class="ot">❌ Відмовляють</div>
+          </div>
+          <div class="cmp-row">
+            <div>Гарантія на фарбування</div>
+            <div class="us">✅ 3 роки</div>
+            <div class="ot">❌ До 6 міс</div>
+          </div>
+          <div class="cmp-row">
+            <div>Доставка зі Львова</div>
+            <div class="us">✅ Включена</div>
+            <div class="ot">❌ Самостійно</div>
+          </div>
+          <div class="cmp-row">
+            <div>Документи і постановка</div>
+            <div class="us">✅ Під ключ</div>
+            <div class="ot">❌ Бігати самому</div>
+          </div>
+          <div class="cmp-row">
+            <div>Оцінка до купівлі авто</div>
+            <div class="us">✅ Безкоштовно</div>
+            <div class="ot">❌ Немає</div>
+          </div>
+          <div class="cmp-row">
+            <div>Фото-звіт на кожному етапі</div>
+            <div class="us">✅ Завжди</div>
+            <div class="ot">❌ Рідко</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Відгуки -->
+      <div class="reviews-col">
+        <div class="rev-card">
+          <div class="rev-stars">★★★★★</div>
+          <p class="rev-text">"Замовили Dodge Ram 1500 з Copart — фронтальне ДТП. Андрій ще до купівлі розрахував вартість відновлення. Все зробили під ключ: кузов, airbag, документи. Приїхав — забрав готове авто з номерами."</p>
+          <div class="rev-author">
+            <div class="rev-ava">О</div>
+            <div>
+              <div class="rev-name">Олег М.</div>
+              <div class="rev-meta">Виноградів · Ford F-150 з IAAI</div>
+              <div class="rev-google">Google Maps ✓</div>
+            </div>
+          </div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-stars">★★★★★</div>
+          <p class="rev-text">"В інших СТО відмовлялись від airbag після USA — не знали як. Тут зняли кресш, прошили, пройшов техогляд без питань. Ще й фарбування зробили — колір 1 в 1 з заводським. Рекомендую."</p>
+          <div class="rev-author">
+            <div class="rev-ava">Т</div>
+            <div>
+              <div class="rev-name">Тарас Г.</div>
+              <div class="rev-meta">Мукачево · BMW X5 з Copart</div>
+              <div class="rev-google">Google Maps ✓</div>
+            </div>
+          </div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-stars">★★★★★</div>
+          <p class="rev-text">"Брав Toyota Camry з аукціону — боявся що буде купа проблем. Все зробили самі: привезли, відремонтували, поставили на облік. Платив поетапно, фото надсилали постійно. Дякую за чесний підхід!"</p>
+          <div class="rev-author">
+            <div class="rev-ava">В</div>
+            <div>
+              <div class="rev-name">Василь К.</div>
+              <div class="rev-meta">Ужгород · Toyota Camry з Copart</div>
+              <div class="rev-google">Google Maps ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════
+     БЛОК 07 — ФІНАЛЬНИЙ CTA
+══════════════════════════════════════ -->
+<div class="block-wrap">
+<span class="mlabel">БЛОК 07 · ФІНАЛЬНИЙ CTA</span>
+<section id="final">
+  <div class="container">
+    <div class="final-inner">
+      <div class="final-eyebrow">🔥 Зараз є вільні місця</div>
+      <h2>Готові почати?<br>Надішліть авто — дамо оцінку за 15 хвилин</h2>
+      <p>Безкоштовно. Без зобов'язань. Андрій особисто відповідає на кожен запит.</p>
+      <div class="final-btns">
+        <a href="#cta-main" class="btn-orange" style="font-size:1.05rem; padding:18px 42px;">🚀 Отримати безкоштовну оцінку</a>
+        <a href="tel:+380" class="btn-white">📞 Зателефонувати</a>
+      </div>
+      <div class="final-meta">м. Мукачево, Закарпатська обл. · Пн–Сб 8:00–19:00 · mymastermyk.com.ua</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- STICKY FAB -->
+<div class="sticky-fab">
+  <div class="fab-label">Записатись</div>
+  <a href="tel:+380" class="fab-btn fab-phone" title="Зателефонувати">📞</a>
+</div>
+
+<!-- ЛЕГЕНДА МОКАПУ -->
+<div style="background:#111; color:#fff; padding:36px 0; font-size:0.83rem;">
+  <div class="container">
+    <div style="font-size:1rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#1E88E5; margin-bottom:16px;">
+      Мокап v4 · Ремонт авто з США · My Master 2026
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px;">
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#E8561A;">Urgency Bar</strong> · «Приймаємо авто прямо зараз» — завжди зверху</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#1E88E5;">Блок 01</strong> · Hero — відео + «Ремонт авто з США під ключ» + pills</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#1E88E5;">Блок 02</strong> · Trust Bar — 5 цифр (200+ авто, 7 етапів, 3 роки, 15+ місць, 7 р.)</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#1E88E5;">Блок 03</strong> · 7-кроковий pipeline + 6 карток послуг USA</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#E8561A;">Блок 04</strong> · Головна CTA-форма (синій фон, urgency «3 місця»)</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#1E88E5;">Блок 05</strong> · Результати — 3 кейси До/Після + мікро-CTA</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#1E88E5;">Блок 06</strong> · Порівняння (7 рядків) + 3 відгуки Google Maps</div>
+      <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px;"><strong style="color:#E8561A;">Блок 07</strong> · Фінальний CTA — «15 хв відповідь» + sticky phone</div>
+    </div>
+    <div style="margin-top:16px; color:#555; font-size:0.75rem;">Конверсійні елементи: Urgency bar · Hero pills · 3-місця scarcity · Micro-CTA після результатів · Sticky FAB</div>
+  </div>
+</div>
+
+</body>
+</html>

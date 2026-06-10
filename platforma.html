@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Master · Командний пункт маркетингу</title>
+<style>
+  :root{
+    --graphite:#1d1f24; --graphite2:#26282f; --card:#2c2f38; --card2:#33363f;
+    --orange:#FF6B1A; --orange-soft:#ff8a45; --line:#3a3d47;
+    --text:#f2f3f5; --muted:#9aa0ab; --muted2:#71767f;
+    --sto:#3aa0ff; --usa:#27c08a; --both:#b388ff;
+    --good:#27c08a; --warn:#ffb020; --bad:#ff5468;
+    --radius:16px; --shadow:0 8px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(1200px 700px at 80% -10%, #2a2d36 0%, var(--graphite) 55%);
+    color:var(--text); min-height:100vh; line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:50;background:rgba(20,21,25,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .head-row{display:flex;align-items:center;gap:18px;padding:14px 0}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo .mark{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--orange),#c44a00);display:grid;place-items:center;font-weight:800;font-size:18px;color:#fff;box-shadow:0 4px 14px rgba(255,107,26,.4)}
+  .logo b{font-size:17px;letter-spacing:.2px}
+  .logo span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+  nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  nav.tabs button{background:transparent;border:1px solid transparent;color:var(--muted);padding:9px 15px;border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+  nav.tabs button:hover{color:var(--text);background:var(--card)}
+  nav.tabs button.active{color:#fff;background:var(--orange);box-shadow:0 4px 14px rgba(255,107,26,.35)}
+
+  /* HERO */
+  .hero{padding:34px 0 10px}
+  .hero h1{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .hero h1 em{color:var(--orange);font-style:normal}
+  .hero p{color:var(--muted);font-size:15px;margin-top:8px;max-width:680px}
+  .hero-stats{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}
+  .hstat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:120px}
+  .hstat b{display:block;font-size:24px;font-weight:800;color:var(--orange)}
+  .hstat span{font-size:12.5px;color:var(--muted)}
+
+  section.view{display:none;padding:26px 0 70px}
+  section.view.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .sec-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted2);font-weight:700;margin:8px 0 16px}
+
+  /* FILTERS */
+  .filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .chip{background:var(--card);border:1px solid var(--line);color:var(--muted);padding:7px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+  .chip:hover{color:var(--text)}
+  .chip.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+  .search{flex:1;min-width:200px;max-width:340px;margin-left:auto}
+  .search input{width:100%;background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 14px;border-radius:10px;font-size:13.5px;outline:none}
+  .search input:focus{border-color:var(--orange)}
+
+  /* AGENT GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+  .agent{background:linear-gradient(180deg,var(--card),var(--graphite2));border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:12px;transition:.18s;position:relative;overflow:hidden}
+  .agent:hover{transform:translateY(-3px);border-color:#4a4d57;box-shadow:var(--shadow)}
+  .agent::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);opacity:.85}
+  .agent-top{display:flex;align-items:center;gap:13px}
+  .num{width:44px;height:44px;border-radius:12px;background:var(--graphite);border:1px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:17px;color:var(--orange);flex-shrink:0}
+  .agent h3{font-size:16px;font-weight:700}
+  .agent .role{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
+  .tag.sto{background:rgba(58,160,255,.16);color:var(--sto)}
+  .tag.usa{background:rgba(39,192,138,.16);color:var(--usa)}
+  .tag.both{background:rgba(179,136,255,.16);color:var(--both)}
+  .mission{font-size:13px;color:#cfd3da;line-height:1.55}
+  .trigs{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+  .trigs .lbl{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:2px}
+  .trig{font-size:12.5px;color:var(--muted);background:var(--graphite);border:1px solid var(--line);padding:5px 10px;border-radius:8px;cursor:pointer;transition:.15s}
+  .trig:hover{color:var(--text);border-color:var(--orange)}
+  .agent-actions{display:flex;gap:8px;margin-top:auto;padding-top:6px}
+  .btn{border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;justify-content:center}
+  .btn.primary{background:var(--orange);color:#fff;flex:1}
+  .btn.primary:hover{background:var(--orange-soft)}
+  .btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange)}
+
+  /* GENERATOR */
+  .gen-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:start}
+  .panel{background:linear-gradient(180deg,var(--card),var(--graphite2));border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+  .field label .hint{text-transform:none;letter-spacing:0;color:var(--muted2);font-weight:500;font-size:11.5px}
+  .field input,.field select,.field textarea{width:100%;background:var(--graphite);border:1px solid var(--line);color:var(--text);padding:11px 13px;border-radius:10px;font-size:14px;outline:none;font-family:inherit}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--orange)}
+  .field textarea{resize:vertical;min-height:74px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .out-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .out-head h3{font-size:15px}
+  .preview{background:var(--graphite);border:1px dashed var(--line);border-radius:12px;padding:18px;font-size:14px;line-height:1.65;color:#e7e9ec;white-space:pre-wrap;min-height:160px}
+  .preview .ph{color:var(--muted2)}
+  .lvlbar{margin-top:16px;background:var(--graphite);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .lvlbar .lh{font-size:12px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:8px}
+  .lvltrack{height:8px;background:var(--card2);border-radius:6px;overflow:hidden}
+  .lvlfill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--orange-soft));transition:.4s}
+  .lvlmeta{display:flex;justify-content:space-between;margin-top:8px;font-size:12.5px}
+  .lvlmeta b{color:var(--orange)}
+  .coach{margin-top:14px;font-size:13px;color:var(--muted);background:rgba(255,107,26,.07);border:1px solid rgba(255,107,26,.25);border-radius:10px;padding:12px 14px}
+  .coach b{color:var(--orange-soft)}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .kpi{background:linear-gradient(180deg,var(--card),var(--graphite2));border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+  .kpi.prio{border-color:var(--orange);box-shadow:0 0 0 1px rgba(255,107,26,.25)}
+  .kpi .kname{font-size:13px;color:var(--muted);font-weight:600}
+  .kpi .kval{font-size:26px;font-weight:800;margin:6px 0 2px}
+  .kpi .ktarget{font-size:12px;color:var(--muted2)}
+  .ktrack{height:7px;background:var(--card2);border-radius:5px;margin-top:12px;overflow:hidden}
+  .kfill{height:100%;border-radius:5px}
+  .badge-prio{display:inline-block;font-size:10px;font-weight:800;color:var(--orange);background:rgba(255,107,26,.14);padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+  .goals{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-bottom:26px}
+  .goal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .goal .gnum{font-size:11px;color:var(--orange);font-weight:800;letter-spacing:.5px}
+  .goal h4{font-size:14.5px;margin:6px 0}
+  .goal p{font-size:12.5px;color:var(--muted)}
+
+  /* RHYTHM */
+  .rhythm{display:flex;flex-direction:column;gap:10px}
+  .day{display:grid;grid-template-columns:90px 1fr auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;transition:.15s}
+  .day:hover{border-color:var(--orange)}
+  .day .dname{font-weight:800;color:var(--orange);font-size:14px}
+  .day .dname small{display:block;color:var(--muted2);font-weight:500;font-size:11px}
+  .day .dact b{font-size:14px}
+  .day .dact span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .day .dtime{font-size:12.5px;color:var(--muted);background:var(--graphite);border:1px solid var(--line);padding:6px 12px;border-radius:20px;white-space:nowrap}
+  .rhythm-foot{margin-top:16px;text-align:center;font-size:14px;color:var(--muted)}
+  .rhythm-foot b{color:var(--orange)}
+
+  /* LIBRARY */
+  .lib-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+  .lib-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-bottom:10px;transition:.15s}
+  .lib-card:hover{border-color:var(--orange)}
+  .lib-card h4{font-size:14px;display:flex;align-items:center;gap:8px}
+  .lib-card .ic{width:26px;height:26px;border-radius:7px;background:var(--graphite);display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--orange);flex-shrink:0}
+  .lib-card p{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .lib-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .lib-head b{font-size:15px}
+  .lib-head .cnt{font-size:12px;color:var(--muted2);background:var(--graphite);padding:2px 10px;border-radius:20px}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(40px);background:var(--orange);color:#fff;padding:13px 24px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:0 10px 30px rgba(255,107,26,.45);opacity:0;transition:.3s;z-index:200;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted2);font-size:12.5px;text-align:center}
+  footer a{color:var(--muted)}
+  @media(max-width:900px){.gen-layout,.lib-cols{grid-template-columns:1fr}.day{grid-template-columns:80px 1fr}.day .dtime{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-row">
+    <div class="logo">
+      <div class="mark">MM</div>
+      <div><b>My Master · Командний пункт</b><span>Маркетинг на ШІ-агентах · Мукачево</span></div>
+    </div>
+    <nav class="tabs">
+      <button class="active" data-view="agents">Агенти</button>
+      <button data-view="gen">Генератор команд</button>
+      <button data-view="kpi">KPI</button>
+      <button data-view="rhythm">Тижневий ритм</button>
+      <button data-view="lib">Навички &amp; Шаблони</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== AGENTS ===== -->
+<section class="view active" id="agents">
+  <div class="wrap">
+    <div class="hero">
+      <h1>Твоя команда з 12 агентів. <em>Система працює без тебе.</em></h1>
+      <p>Обери агента → дай чітку команду → рухайся вперед. Кожен агент знає ICP, brand voice і цілі My Master. Ти тільки затверджуєш.</p>
+      <div class="hero-stats">
+        <div class="hstat"><b>12</b><span>агентів</span></div>
+        <div class="hstat"><b>13</b><span>навичок</span></div>
+        <div class="hstat"><b>6</b><span>шаблонів</span></div>
+        <div class="hstat"><b>2</b><span>напрямки</span></div>
+        <div class="hstat"><b>&lt;2 год</b><span>твого часу/тиж</span></div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <span class="chip active" data-filter="all">Усі агенти</span>
+      <span class="chip" data-filter="sto">Класична СТО</span>
+      <span class="chip" data-filter="usa">Авто з США</span>
+      <div class="search"><input id="agentSearch" placeholder="Пошук: SEO, відгуки, бюджет, reels…"></div>
+    </div>
+
+    <div class="grid" id="agentGrid"></div>
+  </div>
+</section>
+
+<!-- ===== GENERATOR ===== -->
+<section class="view" id="gen">
+  <div class="wrap">
+    <div class="hero" style="padding-bottom:6px">
+      <h1>Генератор команд</h1>
+      <p>Заповни поля — платформа збере ідеальний промпт за формулою <b>ХТО + ЩО + ДЛЯ КОГО + KPI + ДЕДЛАЙН</b> і покаже твій рівень майстерності. Натисни «Копіювати» і встав у чат Cowork.</p>
+    </div>
+    <div class="gen-layout">
+      <div class="panel">
+        <div class="field">
+          <label>Агент <span class="hint">— хто виконує</span></label>
+          <select id="gAgent"></select>
+        </div>
+        <div class="field">
+          <label>Задача <span class="hint">— що зробити (конкретно)</span></label>
+          <textarea id="gTask" placeholder="Напр.: 5 ідей Reels про ремонт після ДТП з гачком у перші 3 секунди"></textarea>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label>Напрямок</label>
+            <select id="gDir">
+              <option value="">— не вказано —</option>
+              <option value="Класична СТО (місцеві клієнти Закарпаття)">Класична СТО</option>
+              <option value="Авто з США під ключ (вся Україна)">Авто з США</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Сегмент ICP</label>
+            <select id="gSeg">
+              <option value="">— не вказано —</option>
+              <option value="A — власники авто після ДТП (головний дохід)">A · після ДТП</option>
+              <option value="B — оновлення вигляду авто">B · оновлення вигляду</option>
+              <option value="C — корпоративні / автопарки / страхові">C · корпоративні</option>
+              <option value="D — кондиціонери (сезон весна-літо)">D · кондиціонери</option>
+              <option value="D2 — сервіс і ТО (повторні візити)">D2 · сервіс і ТО</option>
+              <option value="D3 — детейлінг / салон">D3 · детейлінг</option>
+              <option value="E — покупці авто з США">E · авто з США</option>
+            </select>
+          </div>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label>KPI <span class="hint">— як виміряти</span></label>
+            <input id="gKpi" placeholder="напр. 30 заявок, CPL <200 грн">
+          </div>
+          <div class="field">
+            <label>Дедлайн</label>
+            <input id="gDeadline" placeholder="напр. до п'ятниці, цей тиждень">
+          </div>
+        </div>
+        <div class="field">
+          <label>Деталі / контекст <span class="hint">— опціонально</span></label>
+          <input id="gExtra" placeholder="тон, формат, канал, особливі вимоги">
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="out-head">
+          <h3>Готова команда</h3>
+          <button class="btn primary" id="copyBtn" style="padding:9px 16px">Копіювати</button>
+        </div>
+        <div class="preview" id="gPreview"><span class="ph">Заповни поля зліва — тут зʼявиться готовий промпт для вставки в Cowork…</span></div>
+
+        <div class="lvlbar">
+          <div class="lh">Рівень промпта</div>
+          <div class="lvltrack"><div class="lvlfill" id="lvlFill"></div></div>
+          <div class="lvlmeta"><span id="lvlName">Новачок</span><b id="lvlScore">0 / 5</b></div>
+        </div>
+        <div class="coach" id="coachTip"><b>Підказка:</b> чим більше полів заповнено (агент, задача, сегмент, KPI, дедлайн) — тим точніший результат і менше переробок.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KPI ===== -->
+<section class="view" id="kpi">
+  <div class="wrap">
+    <div class="hero" style="padding-bottom:6px">
+      <h1>KPI-дашборд</h1>
+      <p>Цілі 2026 і місячні метрики. Пріоритет №1 — <b style="color:var(--orange)">повторні візити</b>. Онови цифри в коді під свої фактичні дані.</p>
+    </div>
+    <div class="sec-title">Цілі 2026</div>
+    <div class="goals" id="goalsBox"></div>
+    <div class="sec-title">Місячні метрики</div>
+    <div class="kpi-grid" id="kpiBox"></div>
+  </div>
+</section>
+
+<!-- ===== RHYTHM ===== -->
+<section class="view" id="rhythm">
+  <div class="wrap">
+    <div class="hero" style="padding-bottom:6px">
+      <h1>Тижневий ритм</h1>
+      <p>~2,5 год твого часу на тиждень. Агенти роблять 90% — ти затверджуєш і коригуєш курс.</p>
+    </div>
+    <div class="rhythm" id="rhythmBox"></div>
+    <div class="rhythm-foot">Разом твого часу: <b>~2 год 30 хв/тиждень</b> — вкладаємось у бюджет.</div>
+  </div>
+</section>
+
+<!-- ===== LIBRARY ===== -->
+<section class="view" id="lib">
+  <div class="wrap">
+    <div class="hero" style="padding-bottom:6px">
+      <h1>Навички &amp; Шаблони</h1>
+      <p>Бібліотека готових навичок і шаблонів. Назви відповідають файлам у папках <code>/skills</code> та <code>/templates</code>.</p>
+    </div>
+    <div class="filters">
+      <div class="search" style="margin-left:0;max-width:380px"><input id="libSearch" placeholder="Пошук навички чи шаблону…"></div>
+    </div>
+    <div class="lib-cols">
+      <div>
+        <div class="lib-head"><b>Навички</b><span class="cnt" id="skCnt">13</span></div>
+        <div id="skillBox"></div>
+      </div>
+      <div>
+        <div class="lib-head"><b>Шаблони</b><span class="cnt" id="tpCnt">6</span></div>
+        <div id="tplBox"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    My Master · Командний пункт маркетингу · v1.0 &nbsp;·&nbsp;
+    <a href="https://mymastermyk.com.ua/" target="_blank">сайт</a> ·
+    <a href="https://www.instagram.com/my_masterrr" target="_blank">Instagram</a> ·
+    <a href="https://www.tiktok.com/@mymaster" target="_blank">TikTok</a>
+    &nbsp;·&nbsp; Дані синхронізовано з CLAUDE.md v2.4
+  </div>
+</footer>
+
+<div class="toast" id="toast">Скопійовано в буфер ✓</div>
+
+<script>
+/* ====== DATA ====== */
+const AGENTS = [
+  {n:'01',name:'Стратег',dir:'both',role:'CMO · план, бюджет, координація',
+   mission:'Перетворити My Master на №1 СТО Мукачева через системний підхід: OKR, бюджет, KPI для команди.',
+   trigs:['Склади маркетинг-план на місяць','Розподіли бюджет по каналах','Оціни ефективність каналів','Дай маркетинг-аудит'],
+   kw:'стратегія план бюджет okr аудит цілі координація cmo'},
+  {n:'02',name:'Контент-мейкер',dir:'both',role:'Ідеї, контент-план, рубрики',
+   mission:'Зробити так, щоб про My Master думали щодня — через цікавий і впізнаваний контент.',
+   trigs:['Дай 10 ідей постів на тиждень','Контент-план на місяць','Ідеї для Reels','Придумай рубрику'],
+   kw:'контент ідеї план рубрики reels stories креатив'},
+  {n:'03',name:'SMM-менеджер',dir:'both',role:'Instagram + Facebook щодня',
+   mission:'Перетворити IG/FB на живий канал, де клієнт отримує відповідь швидше за дзвінок.',
+   trigs:['Графік публікацій на тиждень','Підготуй пост до публікації','Які хештеги додати?','Що в Stories сьогодні?'],
+   kw:'smm instagram facebook публікації хештеги stories графік'},
+  {n:'04',name:'SEO-спеціаліст',dir:'both',role:'Сайт + Google Maps у топ',
+   mission:'Щоб коли мукачівець пише «кузовний ремонт» — My Master був №1 у Google.',
+   trigs:['Зроби SEO-аудит сайту','Підбери ключові слова для послуги','Як оптимізувати Google Maps?','План SEO на місяць'],
+   kw:'seo google maps ключові слова мета-теги аудит сайт пошук'},
+  {n:'05',name:'Google Ads',dir:'both',role:'Контекстна реклама',
+   mission:'Кожна гривня в Google Ads приносить ≥3 грн виручки. CPL ≤ 150 грн.',
+   trigs:['Налаштуй кампанію для послуги','Напиши оголошення (RSA)','Оптимізуй кампанію X','Які мінус-слова додати?'],
+   kw:'google ads контекст кампанія cpl ставки оголошення pmax ремаркетинг'},
+  {n:'06',name:'Таргетолог',dir:'both',role:'Meta Ads (IG + FB)',
+   mission:'Щоб My Master бачили ВСІ автовласники Мукачева — і приходили з реклами.',
+   trigs:['Запусти рекламу на послугу','Створи аудиторію для ремаркетингу','Текст до креативу','Як здешевити заявки?'],
+   kw:'таргет meta facebook instagram реклама аудиторія look-alike креатив cpm cpl'},
+  {n:'07',name:'Копірайтер',dir:'both',role:'Усі тексти',
+   mission:'Кожен текст — як розмова з другом-майстром: чесно, корисно, без води.',
+   trigs:['Напиши пост про послугу','Сценарій Reels на тему','Перепиши цей текст','Напиши заклик до дії'],
+   kw:'копірайт текст пост сценарій reels заклик aida pas листи'},
+  {n:'08',name:'Дизайнер',dir:'both',role:'Концепти візуалів + брифи',
+   mission:'Щоб людина, бачачи пост у стрічці, одразу думала — «це My Master».',
+   trigs:['Концепт візуалу для поста','Бриф на фотозйомку','Як знімати процес фарбування?','Сторіборд для Reels'],
+   kw:'дизайн візуал бренд бриф фото сторіборд кольори шрифти'},
+  {n:'09',name:'Аналітик',dir:'both',role:'Звіти, ROI, метрики',
+   mission:'Жодного рішення без цифр. Кожна гривня виправдана даними.',
+   trigs:['Звіт за період','Який ROI по Google Ads?','Аналіз воронки','Спрогнозуй заявки на місяць'],
+   kw:'аналітика звіт roi roas cpl ltv воронка прогноз метрики дані'},
+  {n:'10',name:'CRM / Лояльність',dir:'both',role:'Повторні візити · ПРІОРИТЕТ',
+   mission:'Щоб клієнт повертався 2-3 рази на рік і рекомендував друзям.',
+   trigs:['Як побудувати базу клієнтів?','Створи програму лояльності','Шаблон Viber-розсилки','Що написати через 6 міс після фарбування?'],
+   kw:'crm лояльність повторні візити база розсилка viber реферальна retention'},
+  {n:'11',name:'Репутація',dir:'both',role:'Відгуки + кризи',
+   mission:'Підняти Google Maps до 4.9+ з 100+ відгуками. Жоден негатив без відповіді.',
+   trigs:['Як попросити відгук після візиту?','Відповідь на негативний відгук','Кризова ситуація в групі','Шаблон на 5★ відгук'],
+   kw:'репутація відгуки google maps криза негатив ugc 5 зірок'},
+  {n:'12',name:'Тренд-хантер',dir:'both',role:'Конкуренти + тренди',
+   mission:'My Master завжди на крок попереду конкурентів Мукачева.',
+   trigs:['Що нового у конкурентів?','Аналіз 5 локальних СТО','Які Reels-формати в авто-сфері зараз?','5 ідей, яких ще нема в конкурентів'],
+   kw:'тренди конкуренти аналіз ринок новинки скаут tiktok'}
+];
+
+const SKILLS = [
+  ['brand_voice','Голос бренду — тон, ОК/не-ОК приклади, формула посту'],
+  ['post_creation','Створення поста від ідеї до готового тексту'],
+  ['reels_scriptwriting','Сценарії Reels з гачком у перші 3 секунди'],
+  ['content_calendar','Контент-календар на тиждень/місяць з датами'],
+  ['seo_audit','SEO-аудит сайту: структура, швидкість, мобільна версія'],
+  ['google_ads_setup','Налаштування пошукових кампаній Google Ads'],
+  ['facebook_ads_setup','Налаштування кампаній Meta Ads (IG+FB)'],
+  ['kpi_dashboard','Побудова та ведення KPI-дашборду'],
+  ['monthly_report','Місячний звіт по всіх каналах з ROI'],
+  ['client_journey','Карта шляху клієнта від показу до повторного візиту'],
+  ['reviews_strategy','Стратегія збору відгуків після візиту'],
+  ['crisis_management','Кризовий менеджмент — робота з негативом'],
+  ['competitor_analysis','Аналіз конкурентів Мукачева за чек-листом']
+];
+
+const TEMPLATES = [
+  ['post_template','Шаблон поста для IG/FB'],
+  ['ad_template','Шаблон рекламного оголошення'],
+  ['brief_template','Бриф на дизайн / фотозйомку'],
+  ['monthly_plan_template','Шаблон місячного плану (OKR)'],
+  ['email_viber_template','Шаблони Email / Viber розсилок'],
+  ['review_response','Шаблони відповідей на відгуки']
+];
+
+const GOALS = [
+  ['Ціль 1','Більше заявок','+30% звернень/міс · постійно'],
+  ['Ціль 2','Утримання клієнтів (пріоритет №1)','25% повторних візитів · Q3 2026'],
+  ['Ціль 3','Впізнаваність бренду','№1 СТО Мукачево в Google Maps · Q4 2026'],
+  ['Ціль 4','Система без власника','Андрій <2 год/тиждень · Q4 2026']
+];
+
+// [назва, поточне, ціль(текст), одиниця, %виконання, пріоритет]
+const KPIS = [
+  ['Заявки з Instagram',18,30,'/міс',60,false],
+  ['Заявки з Google',34,50,'/міс',68,false],
+  ['Підписники IG','+120','+200','/міс',60,false],
+  ['Відгуки Google Maps','+6','+10','/міс',60,false],
+  ['Reach у соцмережах','38k','50k','/міс',76,false],
+  ['CTR Google Ads','4.2%','>5%','',84,false],
+  ['Повторні візити','18%','25%','',72,true],
+  ['CPL (вартість заявки)','210 грн','<200 грн','',80,false],
+  ['CAC (вартість клієнта)','740 грн','<800 грн','',92,false]
+];
+
+const RHYTHM = [
+  ['Пн','15 хв','План тижня','Стратег → ти','15 хв ревʼю'],
+  ['Вт','30 хв','Ідеї постів','Контент-мейкер → ти','15 хв вибору'],
+  ['Ср','60 хв','Голосові + відео з СТО','Андрій сам знімає','60 хв зйомки'],
+  ['Чт','30 хв','Готові пости і реклама','Копірайтер + Дизайнер','15 хв затвердж.'],
+  ['Пт','15 хв','Запуск і таргет','SMM + Таргетолог','5 хв ОК'],
+  ['Нд','30 хв','Звіт тижня + дашборд','Аналітик','30 хв читання']
+];
+
+/* ====== RENDER AGENTS ====== */
+const grid=document.getElementById('agentGrid');
+function dirTag(d){
+  if(d==='sto')return '<span class="tag sto">СТО</span>';
+  if(d==='usa')return '<span class="tag usa">Авто з США</span>';
+  return '<span class="tag both">Обидва напрямки</span>';
+}
+function renderAgents(list){
+  grid.innerHTML=list.map(a=>`
+    <div class="agent" data-dir="${a.dir}" data-kw="${a.kw} ${a.name.toLowerCase()} ${a.role.toLowerCase()}">
+      <div class="agent-top">
+        <div class="num">${a.n}</div>
+        <div><h3>${a.name}</h3><div class="role">${a.role}</div></div>
+      </div>
+      <div class="tags">${dirTag(a.dir)}</div>
+      <div class="mission">${a.mission}</div>
+      <div class="trigs">
+        <div class="lbl">Тригери — клікни, щоб взяти в команду</div>
+        ${a.trigs.map(t=>`<div class="trig" data-agent="${a.name}" data-task="${t.replace(/"/g,'&quot;')}">${t}</div>`).join('')}
+      </div>
+      <div class="agent-actions">
+        <button class="btn primary" data-agent="${a.name}">Дати команду</button>
+        <button class="btn ghost" data-agent="${a.name}" data-task="${a.trigs[0].replace(/"/g,'&quot;')}">Швидкий старт</button>
+      </div>
+    </div>`).join('');
+}
+renderAgents(AGENTS);
+
+/* filters + search */
+let curFilter='all';
+document.querySelectorAll('#agents .chip').forEach(c=>c.onclick=()=>{
+  document.querySelectorAll('#agents .chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');curFilter=c.dataset.filter;applyAgentFilter();
+});
+document.getElementById('agentSearch').oninput=applyAgentFilter;
+function applyAgentFilter(){
+  const q=document.getElementById('agentSearch').value.toLowerCase().trim();
+  document.querySelectorAll('.agent').forEach(el=>{
+    const okDir=curFilter==='all'||el.dataset.dir===curFilter||el.dataset.dir==='both';
+    const okQ=!q||el.dataset.kw.includes(q);
+    el.style.display=(okDir&&okQ)?'':'none';
+  });
+}
+
+/* clicks → generator */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-agent]');
+  if(!t)return;
+  switchView('gen');
+  document.getElementById('gAgent').value=t.dataset.agent;
+  if(t.dataset.task)document.getElementById('gTask').value=t.dataset.task;
+  buildPrompt();
+  document.getElementById('gTask').focus();
+});
+
+/* ====== GENERATOR ====== */
+const gAgent=document.getElementById('gAgent');
+gAgent.innerHTML='<option value="">— обери агента —</option>'+AGENTS.map(a=>`<option value="${a.name}">${a.n} · ${a.name}</option>`).join('');
+['gAgent','gTask','gDir','gSeg','gKpi','gDeadline','gExtra'].forEach(id=>document.getElementById(id).addEventListener('input',buildPrompt));
+
+function buildPrompt(){
+  const agent=gAgent.value, task=val('gTask'), dir=val('gDir'), seg=val('gSeg'),
+        kpi=val('gKpi'), dl=val('gDeadline'), extra=val('gExtra');
+  let score=0;
+  const pv=document.getElementById('gPreview');
+  if(!agent&&!task){pv.innerHTML='<span class="ph">Заповни поля зліва — тут зʼявиться готовий промпт для вставки в Cowork…</span>';setLevel(0);return;}
+  let s=`Запусти агента ${agent||'[обери агента]'}.\n\n`;
+  s+=`Задача: ${task||'[опиши задачу конкретно]'}.`;
+  if(agent)score++; if(task)score++;
+  if(dir){s+=`\nНапрямок: ${dir}.`;score++;}
+  if(seg){s+=`\nЦільовий сегмент: ${seg}.`;score++;}
+  if(kpi){s+=`\nKPI: ${kpi}.`;score++;}
+  if(dl){s+=`\nДедлайн: ${dl}.`;}
+  if(extra){s+=`\nДеталі: ${extra}.`;}
+  s+=`\n\nЗвірся з CLAUDE.md (ICP, brand voice, цілі). Дай 1-3 готові варіанти з рекомендацією — економ мій час.`;
+  pv.textContent=s;
+  setLevel(score);
+}
+function val(id){return document.getElementById(id).value.trim();}
+function setLevel(score){
+  const lv=[
+    ['Новачок','Додай агента і конкретну задачу'],
+    ['Новачок','Уточни задачу — що саме і в якому форматі'],
+    ['Впевнений','Додай сегмент ICP — кому це адресовано'],
+    ['Впевнений','Додай KPI — як виміряємо успіх'],
+    ['Просунутий','Майже ідеально. Додай дедлайн для рівня «Майстер»'],
+    ['Майстер','Бездоганна команда: хто + що + для кого + KPI + дедлайн']
+  ];
+  const pct=(score/5)*100;
+  document.getElementById('lvlFill').style.width=Math.min(pct,100)+'%';
+  document.getElementById('lvlName').textContent=lv[score][0];
+  document.getElementById('lvlScore').textContent=score+' / 5';
+  document.getElementById('coachTip').innerHTML='<b>Підказка:</b> '+lv[score][1]+'.';
+}
+
+document.getElementById('copyBtn').onclick=()=>{
+  const txt=document.getElementById('gPreview').textContent;
+  if(!txt||txt.includes('зʼявиться готовий')){toast('Спершу заповни задачу');return;}
+  navigator.clipboard.writeText(txt).then(()=>toast('Скопійовано ✓ Встав у чат Cowork'),()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Скопійовано ✓');
+  });
+};
+
+/* ====== KPI ====== */
+document.getElementById('goalsBox').innerHTML=GOALS.map(g=>`
+  <div class="goal"><div class="gnum">${g[0]}</div><h4>${g[1]}</h4><p>${g[2]}</p></div>`).join('');
+function kpiColor(p){return p>=85?'var(--good)':p>=60?'var(--warn)':'var(--bad)';}
+document.getElementById('kpiBox').innerHTML=KPIS.map(k=>`
+  <div class="kpi ${k[5]?'prio':''}">
+    ${k[5]?'<span class="badge-prio">Пріоритет №1</span>':''}
+    <div class="kname">${k[0]}</div>
+    <div class="kval">${k[1]}</div>
+    <div class="ktarget">ціль: ${k[2]}${k[3]}</div>
+    <div class="ktrack"><div class="kfill" style="width:${k[4]}%;background:${kpiColor(k[4])}"></div></div>
+  </div>`).join('');
+
+/* ====== RHYTHM ====== */
+document.getElementById('rhythmBox').innerHTML=RHYTHM.map(r=>`
+  <div class="day">
+    <div class="dname">${r[0]}<small>${r[1]}</small></div>
+    <div class="dact"><b>${r[2]}</b><span>${r[3]}</span></div>
+    <div class="dtime">${r[4]}</div>
+  </div>`).join('');
+
+/* ====== LIBRARY ====== */
+function renderLib(){
+  const q=document.getElementById('libSearch').value.toLowerCase().trim();
+  const sk=SKILLS.filter(s=>!q||(s[0]+s[1]).toLowerCase().includes(q));
+  const tp=TEMPLATES.filter(t=>!q||(t[0]+t[1]).toLowerCase().includes(q));
+  document.getElementById('skillBox').innerHTML=sk.map(s=>`
+    <div class="lib-card"><h4><span class="ic">S</span>${s[0]}.md</h4><p>${s[1]}</p></div>`).join('')||'<p style="color:var(--muted2);font-size:13px">Нічого не знайдено</p>';
+  document.getElementById('tplBox').innerHTML=tp.map(t=>`
+    <div class="lib-card"><h4><span class="ic">T</span>${t[0]}.md</h4><p>${t[1]}</p></div>`).join('')||'<p style="color:var(--muted2);font-size:13px">Нічого не знайдено</p>';
+  document.getElementById('skCnt').textContent=sk.length;
+  document.getElementById('tpCnt').textContent=tp.length;
+}
+document.getElementById('libSearch').oninput=renderLib;
+renderLib();
+
+/* ====== NAV ====== */
+function switchView(v){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('active',s.id===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+
+/* ====== TOAST ====== */
+let tT;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>el.classList.remove('show'),2200);}
+</script>
+</body>
+</html>

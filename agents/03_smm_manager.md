@@ -64,3 +64,5 @@
 - `/templates/post_template.md`
 - Готові пости від Копірайтера
 - Візуали від Дизайнера
+- `/INSTRUKCIA_DIRECT_MANYCHAT.md` — правила Direct/коментарів, ключові слова, сценарії бота, передача агенту №13
+- `/agents/13_direct_communicator.md` — Direct-комунікатор
